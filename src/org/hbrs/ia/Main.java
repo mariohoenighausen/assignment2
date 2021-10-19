@@ -1,4 +1,4 @@
-package main.main;
+package org.hbrs.ia;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;

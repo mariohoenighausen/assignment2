@@ -1,4 +1,4 @@
-package main.main;
+package org.hbrs.ia;
 
 public class SalesMan {
 }

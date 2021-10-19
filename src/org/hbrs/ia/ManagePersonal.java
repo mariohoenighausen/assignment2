@@ -1,4 +1,4 @@
-package main.main;
+package org.hbrs.ia;
 
 import java.util.List;
 
