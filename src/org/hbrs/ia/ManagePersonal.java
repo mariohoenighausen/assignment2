@@ -1,3 +1,5 @@
+package org.hbrs.ia;
+
 import java.util.List;
 
 public interface ManagePersonal {
