@@ -1,0 +1,8 @@
+use performanceRecordDb
+db.createCollection("salesman")
+db.salesman.insertOne({sid:1,firstName:"Peter",lastName:"Griffin",department:"Digestive-Testings",position:"Full blown drunk"})
+db.createCollection("performance_records")
+db.performance_records.insertOne({sid:1,target_value:1000,actual_value:850,year:2021,goal:"Sell more beer",description:"It's quite simple"})
+db.performance_records.insertOne({sid:2,target_value:500,actual_value:550,year:2015,goal:"Fight with a chicken",description:"The colonel wasn't here"})
+db.performance_records.find({"sid":{$lt: 2} })
+db.drop("salesmen")
