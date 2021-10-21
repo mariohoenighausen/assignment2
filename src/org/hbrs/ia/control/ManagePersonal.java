@@ -1,4 +1,7 @@
-package org.hbrs.ia.model;
+package org.hbrs.ia.control;
+
+import org.hbrs.ia.model.EvaluationRecord;
+import org.hbrs.ia.model.SalesMan;
 
 import java.util.List;
 
@@ -6,7 +9,7 @@ public interface ManagePersonal {
 
     void createSalesMan( SalesMan record );
 
-    void addPerformanceReord( EvaluationRecord record , int sid );
+    void addPerformanceReord(EvaluationRecord record , int sid );
 
     SalesMan readSalesMan( int sid );
 
