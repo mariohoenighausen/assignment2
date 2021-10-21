@@ -1,4 +1,4 @@
-package org.hbrs.ia;
+package org.hbrs.ia.model;
 
 import java.util.List;
 
