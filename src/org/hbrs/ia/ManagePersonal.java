@@ -13,5 +13,4 @@ public interface ManagePersonal {
     List<SalesMan> querySalesMan(String attribute , String key );
 
     EvaluationRecord readEvaluationRecords( int sid );
-
 }

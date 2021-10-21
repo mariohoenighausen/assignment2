@@ -17,7 +17,5 @@ public class Main {
             System.out.println("Origin of the fruit " +document.get("origin"));
             System.out.println("Price of the fruit " +document.get("price"));
         }
-
-
     }
 }
