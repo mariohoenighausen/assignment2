@@ -1,17 +1,21 @@
 package org.hbrs.ia.control;
 
+import org.hbrs.ia.model.EvaluationRecord;
+import org.hbrs.ia.model.SalesMan;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EingabeDialog {
 
-    Container container = Container.getInstance();
+    ManagePersonalController mpc = new ManagePersonalController();
 
     public void startEingabe() {
 
         String strInput = null;
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Prio-Tool Prototype 1.0");
+        System.out.println("Personal Manager");
         while(sc.hasNext()) {
 
             strInput = sc.nextLine();
@@ -19,48 +23,23 @@ public class EingabeDialog {
             String[] inputs = strInput.split(" ");
 
             switch(inputs[0]) {
-                case "enter":
-                    try {
-                        container.addMember(new UserStory(Integer.parseInt(inputs[1]), inputs[2], Integer.parseInt(inputs[3]), Integer.parseInt(inputs[4]), Integer.parseInt(inputs[5]), Integer.parseInt(inputs[6])));
-                    } catch(ContainerException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("User Story hinzugefügt!");
+                case "createSalesMan":
+                        mpc.createSalesMan(new SalesMan(Integer.parseInt(inputs[1]), inputs[2],
+                                inputs[3], inputs[4], inputs[5]));
+                    System.out.println("Salesman created!");
                     break;
-                case "store":
-                    try {
-                        container.store();
-                    } catch(PersistenceException e) {
-                        e.printStackTrace();
-                    }
+                case "addPerformanceRecord":
+                    mpc.addPerformanceRecord(new EvaluationRecord(Integer.parseInt(inputs[1]), Integer.parseInt(inputs[2]),
+                            Integer.parseInt(inputs[3]), Integer.parseInt(inputs[4]), Integer.parseInt(inputs[5])));
                     break;
-                case "load":
-                    if(inputs.length > 1) {
-                        if (inputs[1].equals("force")) {
-                            try {
-                                container.load();
-                            } catch (PersistenceException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (inputs[1].equals("merge")) {
-                            try {
-                                container.loadMerge();
-                            } catch (PersistenceException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+                case "readSalesMan":
                     break;
-                case "dump":
-                    AusgabeDialog ausgabeDialog = new AusgabeDialog();
-                    if(inputs.length > 1) {
-                        ausgabeDialog.startAusgabe(container, Integer.parseInt(inputs[2]));
-                    }
-                    else {
-                        ausgabeDialog.startAusgabe(container);
-                    }
+                case "querySalesMan":
+                    mpc.querySalesMan(inputs[1], inputs[2]);
 
+                    break;
+                case "readEvaluationRecords":
+                    mpc.readEvaluationRecords(Integer.parseInt(inputs[1]));
                     break;
                 case "exit":
                     System.exit(0);
@@ -68,11 +47,12 @@ public class EingabeDialog {
                     break;
                 case "help":
                     System.out.println("Mögliche Befehle: \n" +
-                            "enter (ID Beschreibung Mehrwert Strafe Aufwand Risiko)\n" +
-                            "store\n" +
-                            "load [merge] [force]\n" +
-                            "dump\n" +
-                            "exit\n" +
+                            "createSalesMan\n" +
+                            "addPerformanceRecord\n" +
+                            "readSalesMan\n" +
+                            "querySalesMan\n" +
+                            "readEvaluationRecords\n" +
+                            "exit\n +" +
                             "help");
                     break;
                 default:
