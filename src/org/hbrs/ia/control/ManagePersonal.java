@@ -9,7 +9,7 @@ public interface ManagePersonal {
 
     void createSalesMan( SalesMan record );
 
-    void addPerformanceReord(EvaluationRecord record , int sid );
+    void addPerformanceRecord(EvaluationRecord record , int sid );
 
     SalesMan readSalesMan( int sid );
 
