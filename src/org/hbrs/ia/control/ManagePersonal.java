@@ -8,7 +8,6 @@ import java.util.List;
 public interface ManagePersonal {
 
     void createSalesMan( SalesMan record );
-    
 
     SalesMan readSalesMan( int sid );
 
@@ -21,8 +20,6 @@ public interface ManagePersonal {
     void addPerformanceRecord(EvaluationRecord record , int sid );
 
     List<EvaluationRecord> readAllEvaluationRecords( int sid );
-
-    List<EvaluationRecord> readSpecificEvaluationRecords(int sid, String attribute , String key );
 
     void updatePerformanceRecord(int sid, EvaluationRecord updatedEvaluationRecord );
 
