@@ -8,12 +8,25 @@ import java.util.List;
 public interface ManagePersonal {
 
     void createSalesMan( SalesMan record );
-
-    void addPerformanceRecord(EvaluationRecord record , int sid );
+    
 
     SalesMan readSalesMan( int sid );
 
-    List<SalesMan> querySalesMan(String attribute , String key );
+    List<SalesMan> querySalesMan(String attribute, String key );
 
-    EvaluationRecord readEvaluationRecords( int sid );
+    void updateSalesMan(int sid, SalesMan updatedSalesMan);
+
+    SalesMan deleteSalesMan(int sid);
+
+    void addPerformanceRecord(EvaluationRecord record , int sid );
+
+    List<EvaluationRecord> readAllEvaluationRecords( int sid );
+
+    List<EvaluationRecord> readSpecificEvaluationRecords(int sid, String attribute , String key );
+
+    void updatePerformanceRecord(int sid, EvaluationRecord updatedEvaluationRecord );
+
+    EvaluationRecord deletePerformanceRecord(int sid, int evaluationRecordId);
+
+    EvaluationRecord deleteAllPerformanceRecords(int sid);
 }

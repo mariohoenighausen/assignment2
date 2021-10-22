@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
+import org.hbrs.ia.control.ManagePersonalController;
 import org.hbrs.ia.model.SalesMan;
 
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Test");
+    private static void testDriver(){
         MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
         //MongoDatabase database = mongoClient.getDatabase("food");
         /*MongoCollection<Document> fruits = database.getCollection("fruits");
@@ -29,6 +29,7 @@ public class Main {
         for(Document salesman : salesmen.find()){
             System.out.println(salesman.get("firstName"));
         }
+        //CREATE
         //salesmen.insertOne(new Document().append("firstName","Stewie"));
 
         //SELECT
@@ -53,5 +54,11 @@ public class Main {
         for(Document salesman : results){
             System.out.println("Firstname: " + salesman.get("firstName") + "\n Sid: " + salesman.get("sid"));
         }
+    }
+    public static void main(String[] args) {
+        System.out.println("Test");
+        ManagePersonalController managePersonalController = new ManagePersonalController();
+        SalesMan s = managePersonalController.readSalesMan(1000);
+        System.out.println(s.toString());
     }
 }
