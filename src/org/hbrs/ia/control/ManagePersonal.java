@@ -11,6 +11,12 @@ public interface ManagePersonal {
 
     SalesMan readSalesMan( int sid );
 
+    /**
+     *
+     * @param attribute criteria
+     * @param key
+     * @return list of salesmen that match criteria
+     */
     List<SalesMan> querySalesMan(String attribute, String key );
 
     void updateSalesMan(int sid, SalesMan updatedSalesMan);

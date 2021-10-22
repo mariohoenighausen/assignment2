@@ -4,6 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 import org.hbrs.ia.model.EvaluationRecord;
 import org.hbrs.ia.model.SalesMan;
@@ -11,6 +12,9 @@ import org.hbrs.ia.model.SalesMan;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.*;
 
 public class ManagePersonalController implements ManagePersonal{
     @Override
@@ -51,7 +55,7 @@ public class ManagePersonalController implements ManagePersonal{
             throw new NoSuchElementException();
         }
         Document doc = results.get(0);
-        SalesMan salesMan = new SalesMan(Integer.parseInt((String)doc.get("sid")),doc.get("firstName").toString(),doc.get("lastName").toString(),doc.get("dob").toString(),doc.get("experience").toString());
+        SalesMan salesMan = new SalesMan((Integer) doc.get("sid"),doc.get("firstName").toString(),doc.get("lastName").toString(),doc.get("dob").toString(),doc.get("experience").toString());
         return salesMan;
     }
 
@@ -62,11 +66,15 @@ public class ManagePersonalController implements ManagePersonal{
 
     @Override
     public void updateSalesMan(int sid, SalesMan updatedSalesMan) {
-
+        /*salesmen.updateOne(
+                eq("sid", sid),
+                combine(set("firstName", updatedSalesMan.getFirstName()),set("lastName",updatedSalesMan.getLastName()),set("dob",updatedSalesMan.getDob()),set(), currentDate("lastModified")),
+                new UpdateOptions().upsert(true).bypassDocumentValidation(true));*/
     }
 
     @Override
     public SalesMan deleteSalesMan(int sid) {
+
         return null;
     }
 
@@ -80,10 +88,6 @@ public class ManagePersonalController implements ManagePersonal{
         return null;
     }
 
-    @Override
-    public List<EvaluationRecord> readSpecificEvaluationRecords(int sid, String attribute, String key) {
-        return null;
-    }
 
     @Override
     public void updatePerformanceRecord(int sid, EvaluationRecord updatedEvaluationRecord) {

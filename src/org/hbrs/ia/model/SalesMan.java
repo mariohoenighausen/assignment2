@@ -34,4 +34,15 @@ public class SalesMan {
     public String getExperience() {
         return experience;
     }
+
+    @Override
+    public String toString() {
+        return "SalesMan{" +
+                "sid=" + sid +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", experience='" + experience + '\'' +
+                '}';
+    }
 }

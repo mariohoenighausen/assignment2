@@ -58,7 +58,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Test");
         ManagePersonalController managePersonalController = new ManagePersonalController();
-        SalesMan s = managePersonalController.readSalesMan(1000);
+        //managePersonalController.createSalesMan(new SalesMan(1,"Peter","Griffin","22.10.2021",""));
+        SalesMan s = managePersonalController.readSalesMan(1);
         System.out.println(s.toString());
     }
 }
