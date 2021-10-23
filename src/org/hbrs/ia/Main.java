@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 import org.hbrs.ia.control.ManagePersonalController;
+import org.hbrs.ia.model.EvaluationRecord;
 import org.hbrs.ia.model.SalesMan;
 
 import java.util.ArrayList;
@@ -58,8 +59,21 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Test");
         ManagePersonalController managePersonalController = new ManagePersonalController();
-        //managePersonalController.createSalesMan(new SalesMan(1,"Peter","Griffin","22.10.2021",""));
-        SalesMan s = managePersonalController.readSalesMan(1);
-        System.out.println(s.toString());
+        // managePersonalController.createSalesMan(new SalesMan(1,"Peter","Griffin","22.10.2021",""));
+        // SalesMan s = managePersonalController.readSalesMan(1);
+        /*for(SalesMan sa :managePersonalController.querySalesMan("dob","20.08.1995")){
+            System.out.println(sa.toString());
+        }*/
+        //managePersonalController.updateSalesMan(1000,new SalesMan(2,"Peter","Parker","30.06.1990","Being the friendly spider of the neighborhood"));
+        //SalesMan s = managePersonalController.readSalesMan(1);
+
+        EvaluationRecord rc = new EvaluationRecord(2,1,2,2015,"Being 65% good",1);
+        //managePersonalController.addPerformanceRecord(rc,1);
+        //managePersonalController.updatePerformanceRecord(1,rc);
+
+        managePersonalController.deleteAllPerformanceRecords(1);
+       for(EvaluationRecord evalRC: managePersonalController.readAllEvaluationRecords(1)){
+            System.out.println(evalRC);
+        }
     }
 }

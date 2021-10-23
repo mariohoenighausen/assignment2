@@ -15,6 +15,17 @@ public class SalesMan {
         this.experience = experience;
     }
 
+    public SalesMan(String firstName, String lastName, String dob, String experience) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.experience = experience;
+    }
+
+    public SalesMan() {
+
+    }
+
     public int getSid() {
         return sid;
     }

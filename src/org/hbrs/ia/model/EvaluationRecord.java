@@ -5,18 +5,20 @@ public class EvaluationRecord {
     private int actualValue;
     private int targetValue;
     private int year;
-    private String goal_desc;
+    private String goalDesc;
     private int sid;
 
-    public EvaluationRecord(int erid, int actualValue, int targetValue, int year, String goal_desc, int sid) {
+    public EvaluationRecord(int erid, int actualValue, int targetValue, int year, String goalDesc, int sid) {
         this.erid = erid;
         this.actualValue = actualValue;
         this.targetValue = targetValue;
         this.year = year;
-        this.goal_desc = goal_desc;
+        this.goalDesc = goalDesc;
         this.sid = sid;
     }
+    public EvaluationRecord(){
 
+    }
     public int getErid() {
         return erid;
     }
@@ -33,11 +35,23 @@ public class EvaluationRecord {
         return year;
     }
 
-    public String getGoal_desc() {
-        return goal_desc;
+    public String getGoalDesc() {
+        return goalDesc;
     }
 
     public int getSid() {
         return sid;
+    }
+
+    @Override
+    public String toString() {
+        return "EvaluationRecord{" +
+                "erid=" + erid +
+                ", actualValue=" + actualValue +
+                ", targetValue=" + targetValue +
+                ", year=" + year +
+                ", goal_desc='" + goalDesc + '\'' +
+                ", sid=" + sid +
+                '}';
     }
 }

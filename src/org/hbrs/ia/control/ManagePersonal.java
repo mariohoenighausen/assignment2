@@ -29,7 +29,7 @@ public interface ManagePersonal {
 
     void updatePerformanceRecord(int sid, EvaluationRecord updatedEvaluationRecord );
 
-    EvaluationRecord deletePerformanceRecord(int sid, int evaluationRecordId);
+    void deletePerformanceRecord(int sid, int evaluationRecordId);
 
-    EvaluationRecord deleteAllPerformanceRecords(int sid);
+    void deleteAllPerformanceRecords(int sid);
 }

@@ -13,16 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;
 
+
 public class ManagePersonalController implements ManagePersonal{
+    private final String databaseName = "evaluation_records_test";
+    private final String databaseStr = "mongodb://localhost:27017";
+    private List<String> collectionNames;
+    public ManagePersonalController(){
+        collectionNames = new ArrayList<>();
+        collectionNames.add("salesman");
+        collectionNames.add("evaluation_record");
+    }
     @Override
     public void createSalesMan(SalesMan record) {
+
         try{
-            MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
-            MongoCollection<Document> salesmen = database.getCollection("salesman");
+            MongoClient mongoClient = new MongoClient(new MongoClientURI(databaseStr));
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> salesmen = database.getCollection(collectionNames.get(0));
             salesmen.insertOne(new Document()
                     .append("sid", record.getSid())
                     .append("firstName",record.getFirstName())
@@ -61,46 +72,165 @@ public class ManagePersonalController implements ManagePersonal{
 
     @Override
     public List<SalesMan> querySalesMan(String attribute, String key) {
-        return null;
+        List<Document> results = new ArrayList<>();
+        try{
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> salesmen = database.getCollection("salesman");
+            Document query = new Document(attribute, key);
+            results = new ArrayList<>();
+            salesmen.find(query).into(results);
+        }
+        catch(Exception exception){
+
+        }
+        ArrayList<SalesMan> salesMEN = new ArrayList<SalesMan>();
+        for(Document doc : results){
+            SalesMan s = new SalesMan(Integer.parseInt(doc.get("sid").toString()),doc.get("firstName").toString(),doc.get("lastName").toString(),doc.get("dob").toString(),doc.get("experience").toString());
+            salesMEN.add(s);
+        }
+        return salesMEN;
     }
 
     @Override
     public void updateSalesMan(int sid, SalesMan updatedSalesMan) {
-        /*salesmen.updateOne(
-                eq("sid", sid),
-                combine(set("firstName", updatedSalesMan.getFirstName()),set("lastName",updatedSalesMan.getLastName()),set("dob",updatedSalesMan.getDob()),set(), currentDate("lastModified")),
-                new UpdateOptions().upsert(true).bypassDocumentValidation(true));*/
+        List<Document> results = new ArrayList<>();
+        try{
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> salesmen = database.getCollection("salesman");
+            results = new ArrayList<>();
+
+            salesmen.updateOne(
+                    eq("sid", sid),
+                    combine(set("firstName", updatedSalesMan.getFirstName()),set("lastName",updatedSalesMan.getLastName()),set("dob",updatedSalesMan.getDob()),set("experience",updatedSalesMan.getExperience()), currentDate("lastModified")),
+                    new UpdateOptions().upsert(true).bypassDocumentValidation(true));
+        }
+        catch(Exception exception) {
+
+        }
     }
 
     @Override
     public SalesMan deleteSalesMan(int sid) {
+        SalesMan salesMan = new SalesMan();
+        try {
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> salesmen = database.getCollection("salesman");
+            salesMan = readSalesMan(sid);
+            salesmen.deleteOne(eq("sid", sid));
+            // TODO: maybe delete all associated evaluation_records aswell
+        }
+        catch(Exception ex){
 
-        return null;
+        }
+        return salesMan;
     }
 
     @Override
     public void addPerformanceRecord(EvaluationRecord record, int sid) {
+        try {
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI(databaseStr));
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> evalRC = database.getCollection(collectionNames.get(1));
+            evalRC.insertOne(new Document()
+                    .append("erid",record.getErid())
+                    .append("actualValue",record.getActualValue())
+                    .append("targetValue",record.getTargetValue())
+                    .append("year",record.getYear())
+                    .append("goalDescription",record.getGoalDesc())
+                    .append("sid",record.getSid()));
+        }
+        catch (Exception exception){
 
+        }
     }
-
     @Override
     public List<EvaluationRecord> readAllEvaluationRecords(int sid) {
-        return null;
+        List<Document> results = new ArrayList<>();
+        try{
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> evaluationRC = database.getCollection(collectionNames.get(1));
+            Document query = new Document("sid",sid);
+            results = new ArrayList<>();
+            evaluationRC.find(query).into(results);
+        }
+        catch(Exception exception){
+
+        }
+        ArrayList<EvaluationRecord> evaluationRecords = new ArrayList<>();
+        for(Document doc : results){
+            EvaluationRecord eva = new EvaluationRecord(Integer.parseInt(doc.get("erid").toString()),Integer.parseInt(doc.get("actualValue").toString()),Integer.parseInt(doc.get("targetValue").toString()),Integer.parseInt(doc.get("year").toString()),doc.get("goalDescription").toString(),Integer.parseInt(doc.get("sid").toString()));
+            evaluationRecords.add(eva);
+        }
+        return evaluationRecords;
     }
+    //TODO: implement method for selecting a single evaluation_record
+    /*public EvaluationRecord readEvaluationRecord(int sid,int erid) {
+        List<Document> results = new ArrayList<Document>();
+        try{
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> evaluationRC = database.getCollection(collectionNames.get(1));
+            Document query = new Document("$and",new Document("$eq",new Document("sid",sid)),new Document( "$eq", new Document("erid",erid))));
+            evaluationRC.find(query).into(results);
+        }
+        catch(Exception exception){
+
+        }
+        Document doc = results.get(0);
+        EvaluationRecord eva = new EvaluationRecord(Integer.parseInt(doc.get("erid").toString()),Integer.parseInt(doc.get("actualValue").toString()),Integer.parseInt(doc.get("targetValue").toString()),Integer.parseInt(doc.get("year").toString()),doc.get("goalDescription").toString(),Integer.parseInt(doc.get("sid").toString()));
+        return eva;
+    }*/
 
 
     @Override
     public void updatePerformanceRecord(int sid, EvaluationRecord updatedEvaluationRecord) {
+        List<Document> results = new ArrayList<>();
+        try{
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> evalRC = database.getCollection(collectionNames.get(1));
 
+            evalRC.updateOne(
+                    and(eq("sid",sid),eq("erid", updatedEvaluationRecord.getErid())),
+                    combine(set("erid", updatedEvaluationRecord.getErid()),set("actualValue",updatedEvaluationRecord.getActualValue()),set("targetValue",updatedEvaluationRecord.getTargetValue()),set("year",updatedEvaluationRecord.getYear()),set("goalDescription",updatedEvaluationRecord.getGoalDesc()), currentDate("lastModified")),
+                    new UpdateOptions().upsert(true).bypassDocumentValidation(true));
+        }
+        catch(Exception exception) {
+
+        }
     }
 
+    //TODO: maybe return deleted performance record
     @Override
-    public EvaluationRecord deletePerformanceRecord(int sid, int evaluationRecordId) {
-        return null;
-    }
+    public void deletePerformanceRecord(int sid, int evaluationRecordId) {
+        EvaluationRecord evaluationRecord = new EvaluationRecord();
+        try {
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> evalRcs = database.getCollection("evaluation_record");
+            //evaluationRecord = ;
+            evalRcs.deleteOne(and(eq("sid", sid),eq("erid",evaluationRecordId)));
+        }
+        catch(Exception ex){
 
+        }
+        // return evaluationRecord;
+    }
+    //TODO: maybe return deleted performance records
     @Override
-    public EvaluationRecord deleteAllPerformanceRecords(int sid) {
-        return null;
+    public void deleteAllPerformanceRecords(int sid) {
+        try{
+            MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+            MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+            MongoCollection<Document> evalRcs = database.getCollection("evaluation_record");
+            evalRcs.deleteMany(eq("sid", sid));
+        }
+        catch(Exception ex){
+
+        }
     }
 }
