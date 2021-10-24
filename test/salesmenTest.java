@@ -5,87 +5,92 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 
+import org.hbrs.ia.control.ManagePersonalController;
+import org.hbrs.ia.model.EvaluationRecord;
+import org.hbrs.ia.model.SalesMan;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class salesmenTest {
-    private MongoClient mongoClient;
-    private MongoDatabase database;
-    private static MongoCollection<Document> salesmenTest;
-    private List<Document> results;
+    private static ManagePersonalController mpc;
+
     @BeforeEach
-    public void setup(){
-        mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        database = mongoClient.getDatabase("evaluation_records_test");
-        salesmenTest = database.getCollection("salesmanTest");
-        results = new ArrayList<>();
+    public void setup() {
+        mpc = new ManagePersonalController();
     }
 
     @Test
-    public void createTest()
-    {
-        String name = "Stewie";
-        salesmenTest.insertOne(new Document().append("firstName","Stewie"));
-        for(Document salesman : salesmenTest.find()) {
-            assertEquals(name, salesman.get("firstName"));
+    public void createandReadTest() {
+        mpc.createSalesMan(new SalesMan(1, "Frank", "Castle", "01.05.2001", "bad"));
+        SalesMan frankTest = mpc.readSalesMan(1);
+        assertEquals(frankTest.getSid(), 1);
+        assertEquals(frankTest.getFirstName(), "Frank");
+        assertEquals(frankTest.getLastName(), "Castle");
+        assertEquals(frankTest.getDob(), "01.05.2001");
+        assertEquals(frankTest.getExperience(), "bad");
+
+        mpc.addPerformanceRecord(new EvaluationRecord(1,1000,2000,2010,"good",1),1);
+        for(EvaluationRecord evalRC: mpc.readAllEvaluationRecords(1)){
+            assertEquals(evalRC.getErid(), 1);
+            assertEquals(evalRC.getActualValue(), 1000);
+            assertEquals(evalRC.getTargetValue(), 2000);
+            assertEquals(evalRC.getYear(), 2010);
+            assertEquals(evalRC.getGoalDesc(), "good");
+            assertEquals(evalRC.getSid(),1);
         }
     }
 
-
-    @Test
-    public void readTest()
-    {
-        String name = "Stewie";
-        Document query = new Document("firstName", "stewie");
-        List<Document> results = new ArrayList<>();
-        salesmenTest.find(query).into(results);
-        for(Document salesman : salesmenTest.find()) {
-            assertEquals(name, salesman.get("firstName"));
-        }
-    }
     @Test
     public void updateTest()
     {
-        String name = "Stewie";
-        String id = "1000";
-        Document query = new Document(
-                "sid",new Document(new Document("$eq","1")));
-        Document update = new Document(
-                "$push",
-                new Document("sid","1000"));
-        salesmenTest.updateOne(
-                eq("firstName", "Stewie"),
-                combine(set("sid", "1000"), currentDate("lastModified")),
-                new UpdateOptions().upsert(true).bypassDocumentValidation(true));
-        for(Document salesman : salesmenTest.find()) {
-            assertEquals(name, salesman.get("firstName"));
-            assertEquals(id, salesman.get("sid"));
+        mpc.updateSalesMan(1,new SalesMan(1,"Tom","test","01.01.00","new"));
+        assertEquals(mpc.readSalesMan(1).getSid(),1);
+        assertEquals(mpc.readSalesMan(1).getFirstName(),"Tom");
+        assertEquals(mpc.readSalesMan(1).getLastName(),"test");
+        assertEquals(mpc.readSalesMan(1).getDob(),"01.01.00");
+        assertEquals(mpc.readSalesMan(1).getExperience(),"new");
+
+        mpc.updatePerformanceRecord(1,new EvaluationRecord(1,500,750,2020,"very nice",1));
+        for(EvaluationRecord evalRC: mpc.readAllEvaluationRecords(1)) {
+            assertEquals(evalRC.getErid(), 1);
+            assertEquals(evalRC.getActualValue(), 500);
+            assertEquals(evalRC.getTargetValue(), 750);
+            assertEquals(evalRC.getYear(), 2020);
+            assertEquals(evalRC.getGoalDesc(), "very nice");
+            assertEquals(evalRC.getSid(), 1);
         }
     }
+
     @Test
     public void deleteTest()
     {
-        salesmenTest.deleteOne(eq("firstName", "Stewie"));
-        results = new ArrayList<>();
-        salesmenTest.find().into(results);
-        for(Document salesman : results){
-            assertNull(salesman.get("sid"));
-        }
+        mpc.deleteSalesMan(1);
+        assertThrows(NoSuchElementException.class,
+                ()->{ assertNull(mpc.readSalesMan(1)); });
 
+        mpc.deletePerformanceRecord(1, 1);
+        List<EvaluationRecord> test  = mpc.readAllEvaluationRecords(1);
+        for (EvaluationRecord e : test){
+            System.out.println(e);
+        }
+        //TODO: readAllEvaluationRecords überprüfen, zugriff auf id die gelöscht ist funktioniert
     }
+
+
 
     @AfterAll
     public static void drop(){
-        salesmenTest.drop();
+        MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+        MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+        database.drop();
     }
 }
