@@ -29,14 +29,15 @@ public class EingabeDialog {
                     System.out.println("Salesman created!");
                     break;
                 case "readSalesMan":
-                    mpc.readSalesMan(Integer.parseInt(inputs[1]));
+                    System.out.println(mpc.readSalesMan(Integer.parseInt(inputs[1])));
+
                     break;
                 case "deleteSalesMan":
                     mpc.deleteSalesMan(Integer.parseInt(inputs[1]));
                     System.out.println("Salesman deleted!");
                     break;
                 case "querySalesMan":
-                    mpc.querySalesMan(inputs[1], inputs[2]);
+                    System.out.println(mpc.querySalesMan(inputs[1], inputs[2]));
                     break;
                 case "updateSalesMan":
                     mpc.updateSalesMan(Integer.parseInt(inputs[1]), new SalesMan(Integer.parseInt(inputs[2]), inputs[3],
@@ -50,7 +51,8 @@ public class EingabeDialog {
                     System.out.println("Performance Record added!");
                     break;
                 case "readAllEvaluationRecords":
-                    mpc.readAllEvaluationRecords(Integer.parseInt(inputs[1]));
+                    System.out.println(mpc.readAllEvaluationRecords(Integer.parseInt(inputs[1])));
+
                     break;
                 case "updatePerformanceRecord":
                     mpc.updatePerformanceRecord(Integer.parseInt(inputs[1]),
