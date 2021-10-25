@@ -19,7 +19,7 @@ import static com.mongodb.client.model.Updates.*;
 
 //TODO: Singleton
 public class ManagePersonalController implements ManagePersonal{
-    private String databaseName = "evaluation_records_test";
+    private String databaseName;
     private final String databaseStr = "mongodb://localhost:27017";
     private MongoClientURI mongoClientURI;
     private List<String> collectionNames;
@@ -86,10 +86,11 @@ public class ManagePersonalController implements ManagePersonal{
     public List<SalesMan> querySalesMan(String attribute, String key) {
         List<Document> results = new ArrayList<>();
         try{
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> salesmen = database.getCollection(collectionNames.get(0));
-            Document query = new Document(attribute, key);
+            Document query = new Document();
+            query = attribute.equals("sid") ? new Document(attribute, Integer.parseInt(key)) : new Document(attribute, key);
             results = new ArrayList<>();
             salesmen.find(query).into(results);
         }
@@ -108,7 +109,7 @@ public class ManagePersonalController implements ManagePersonal{
     public void updateSalesMan(int sid, SalesMan updatedSalesMan) {
         List<Document> results = new ArrayList<>();
         try{
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> salesmen = database.getCollection(collectionNames.get(0));
             results = new ArrayList<>();
@@ -127,7 +128,7 @@ public class ManagePersonalController implements ManagePersonal{
     public SalesMan deleteSalesMan(int sid) {
         SalesMan salesMan = new SalesMan();
         try {
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> salesmen = database.getCollection(collectionNames.get(0));
             salesMan = readSalesMan(sid);
@@ -143,7 +144,7 @@ public class ManagePersonalController implements ManagePersonal{
     @Override
     public void addPerformanceRecord(EvaluationRecord record, int sid) {
         try {
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evalRC = database.getCollection(collectionNames.get(1));
             evalRC.insertOne(new Document()
@@ -162,7 +163,7 @@ public class ManagePersonalController implements ManagePersonal{
     public List<EvaluationRecord> readAllEvaluationRecords(int sid) {
         List<Document> results = new ArrayList<>();
         try{
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evaluationRC = database.getCollection(collectionNames.get(1));
             Document query = new Document("sid",sid);
@@ -183,7 +184,7 @@ public class ManagePersonalController implements ManagePersonal{
     public EvaluationRecord readEvaluationRecord(int sid,int erid) {
         List<Document> results = new ArrayList<Document>();
         try{
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evaluationRC = database.getCollection(collectionNames.get(1));
             Document query = new Document();
@@ -205,7 +206,7 @@ public class ManagePersonalController implements ManagePersonal{
     public void updatePerformanceRecord(int sid, EvaluationRecord updatedEvaluationRecord) {
         List<Document> results = new ArrayList<>();
         try{
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evalRC = database.getCollection(collectionNames.get(1));
 
@@ -224,7 +225,7 @@ public class ManagePersonalController implements ManagePersonal{
     public void deletePerformanceRecord(int sid, int evaluationRecordId) {
         EvaluationRecord evaluationRecord = new EvaluationRecord();
         try {
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evalRcs = database.getCollection(collectionNames.get(1));
             //evaluationRecord = ;
@@ -239,7 +240,7 @@ public class ManagePersonalController implements ManagePersonal{
     @Override
     public void deleteAllPerformanceRecords(int sid) {
         try{
-            MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
+            MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evalRcs = database.getCollection(collectionNames.get(1));
             evalRcs.deleteMany(eq("sid", sid));
