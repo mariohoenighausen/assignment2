@@ -12,7 +12,7 @@ public class EingabeDialog {
 
     public void startEingabe() {
 
-        String strInput = null;
+        String strInput;
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Personal Manager");
