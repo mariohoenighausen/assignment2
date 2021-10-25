@@ -31,7 +31,7 @@ public class salesmenTest {
         assertEquals(frankTest.getDob(), "01.05.2001");
         assertEquals(frankTest.getExperience(), "bad");
 
-        mpc.addPerformanceRecord(new EvaluationRecord(1,1000,2000,2010,"good",1),1);
+        mpc.addPerformanceRecord(new EvaluationRecord(1,1000,2000,2010,"good",1));
         for(EvaluationRecord evalRC: mpc.readAllEvaluationRecords(1)){
             assertEquals(evalRC.getErid(), 1);
             assertEquals(evalRC.getActualValue(), 1000);

@@ -142,7 +142,7 @@ public class ManagePersonalController implements ManagePersonal{
     }
 
     @Override
-    public void addPerformanceRecord(EvaluationRecord record, int sid) {
+    public void addPerformanceRecord(EvaluationRecord record) {
         try {
             MongoClient mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);

@@ -23,7 +23,7 @@ public interface ManagePersonal {
 
     SalesMan deleteSalesMan(int sid);
 
-    void addPerformanceRecord(EvaluationRecord record , int sid );
+    void addPerformanceRecord(EvaluationRecord record);
 
     List<EvaluationRecord> readAllEvaluationRecords( int sid );
 

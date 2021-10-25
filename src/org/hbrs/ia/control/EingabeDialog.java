@@ -50,7 +50,7 @@ public class EingabeDialog {
                 case "addPerformanceRecord":
                     mpc.addPerformanceRecord(new EvaluationRecord(Integer.parseInt(inputs[1]), Integer.parseInt(inputs[2]),
                             Integer.parseInt(inputs[3]), Integer.parseInt(inputs[4]), inputs[5],
-                            Integer.parseInt(inputs[6])), Integer.parseInt(inputs[7]));
+                            Integer.parseInt(inputs[6])));
                     System.out.println("Performance Record added!");
                     break;
                 case "readAllEvaluationRecords":
