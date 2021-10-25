@@ -67,13 +67,13 @@ public class ManagePersonalController implements ManagePersonal{
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> salesmen = database.getCollection(collectionNames.get(0));
             Document query = new Document("sid",new Document(new Document("$eq",sid)));
-             results = new ArrayList<>();
+            results = new ArrayList<>();
             salesmen.find(query).into(results);
             mongoClient.close();
         }
-       catch(Exception exception){
+        catch(Exception exception){
 
-       }
+        }
         if(results.size() == 0){
             throw new NoSuchElementException();
         }
