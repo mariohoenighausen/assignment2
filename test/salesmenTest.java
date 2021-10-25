@@ -1,9 +1,6 @@
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.UpdateOptions;
-import org.bson.Document;
 
 import org.hbrs.ia.control.ManagePersonalController;
 import org.hbrs.ia.model.EvaluationRecord;
@@ -12,20 +9,16 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Updates.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class salesmenTest {
-    private static ManagePersonalController mpc;
+    private ManagePersonalController mpc;
 
     @BeforeEach
     public void setup() {
-        mpc = ManagePersonalController.getInstance("");
+        mpc = ManagePersonalController.getInstance("database_test");
     }
 
     @Test
@@ -77,21 +70,15 @@ public class salesmenTest {
         assertThrows(NoSuchElementException.class,
                 ()->{ assertNull(mpc.readSalesMan(1)); });
 
-        mpc.deletePerformanceRecord(1, 1);
-        /*List<EvaluationRecord> test  = mpc.readEvaluationRecord(1,1);
-        for (EvaluationRecord e : test){
-            System.out.println(e);
-        }*/
-        System.out.println(mpc.readEvaluationRecord(1,1));
-        //TODO: readAllEvaluationRecords überprüfen, zugriff auf id die gelöscht ist funktioniert
+        mpc.deleteAllPerformanceRecords(1);
+        assertThrows(NoSuchElementException.class,
+                ()->{ assertNull(mpc.readEvaluationRecord(1,1)); });
     }
-
-
 
     @AfterAll
     public static void drop(){
         MongoClient mongoClient = mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
+        MongoDatabase database = mongoClient.getDatabase("database_test");
         database.drop();
     }
 }
