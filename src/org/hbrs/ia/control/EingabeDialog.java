@@ -76,7 +76,7 @@ public class EingabeDialog {
                     break;
                 case "help":
                     System.out.println("Mögliche Befehle:\n" +
-                            "createSalesMan\n" +
+                            "createSalesMan SID firstName lastName dateOfBirth experience\n" +
                             "readSalesMan\n" +
                             "deleteSalesMan\n" +
                             "querySalesMan\n" +
