@@ -173,6 +173,9 @@ public class ManagePersonalController implements ManagePersonal{
         catch(Exception exception){
 
         }
+        if(results.size() == 0){
+            throw new NoSuchElementException();
+        }
         ArrayList<EvaluationRecord> evaluationRecords = new ArrayList<>();
         for(Document doc : results){
             EvaluationRecord eva = new EvaluationRecord(Integer.parseInt(doc.get("erid").toString()),Integer.parseInt(doc.get("actualValue").toString()),Integer.parseInt(doc.get("targetValue").toString()),Integer.parseInt(doc.get("year").toString()),doc.get("goalDescription").toString(),Integer.parseInt(doc.get("sid").toString()));
@@ -193,6 +196,9 @@ public class ManagePersonalController implements ManagePersonal{
         }
         catch(Exception exception){
 
+        }
+        if(results.size() == 0){
+            throw new NoSuchElementException();
         }
         Document doc = results.get(0);
         EvaluationRecord eva = new EvaluationRecord(Integer.parseInt(doc.get("erid").toString()),Integer.parseInt(doc.get("actualValue").toString()),Integer.parseInt(doc.get("targetValue").toString()),Integer.parseInt(doc.get("year").toString()),doc.get("goalDescription").toString(),Integer.parseInt(doc.get("sid").toString()));
