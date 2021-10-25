@@ -25,7 +25,7 @@ public class salesmenTest {
 
     @BeforeEach
     public void setup() {
-        mpc = new ManagePersonalController();
+        mpc = ManagePersonalController.getInstance("");
     }
 
     @Test
@@ -78,10 +78,11 @@ public class salesmenTest {
                 ()->{ assertNull(mpc.readSalesMan(1)); });
 
         mpc.deletePerformanceRecord(1, 1);
-        List<EvaluationRecord> test  = mpc.readAllEvaluationRecords(1);
+        /*List<EvaluationRecord> test  = mpc.readEvaluationRecord(1,1);
         for (EvaluationRecord e : test){
             System.out.println(e);
-        }
+        }*/
+        System.out.println(mpc.readEvaluationRecord(1,1));
         //TODO: readAllEvaluationRecords überprüfen, zugriff auf id die gelöscht ist funktioniert
     }
 

@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class EingabeDialog {
 
-    ManagePersonalController mpc = new ManagePersonalController();
+    ManagePersonalController mpc = ManagePersonalController.getInstance("");
 
     public void startEingabe() {
 

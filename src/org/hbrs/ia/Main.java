@@ -27,11 +27,8 @@ public class Main {
         }*/
         MongoDatabase database = mongoClient.getDatabase("evaluation_records_test");
         MongoCollection<Document> salesmen = database.getCollection("salesman");
-        for(Document salesman : salesmen.find()){
-            System.out.println(salesman.get("firstName"));
-        }
         //CREATE
-        //salesmen.insertOne(new Document().append("firstName","Stewie"));
+        salesmen.insertOne(new Document().append("firstName","Stewie"));
 
         //SELECT
         Document query = new Document("firstName", "stewie");
@@ -49,7 +46,7 @@ public class Main {
                 combine(set("sid", "1000"), currentDate("lastModified")),
                 new UpdateOptions().upsert(true).bypassDocumentValidation(true));
         //DELETE
-        salesmen.deleteOne(eq("firstName", "Stewie"));
+        //salesmen.deleteOne(eq("firstName", "Stewie"));
         results = new ArrayList<>();
         salesmen.find().into(results);
         for(Document salesman : results){
@@ -58,22 +55,23 @@ public class Main {
     }
     public static void main(String[] args) {
         System.out.println("Test");
-        ManagePersonalController managePersonalController = new ManagePersonalController();
-        // managePersonalController.createSalesMan(new SalesMan(1,"Peter","Griffin","22.10.2021",""));
+        ManagePersonalController managePersonalController = ManagePersonalController.getInstance("evaluation_records_test");
+        //managePersonalController.createSalesMan(new SalesMan(1,"Peter","Griffin","22.10.2021",""));
         // SalesMan s = managePersonalController.readSalesMan(1);
         /*for(SalesMan sa :managePersonalController.querySalesMan("dob","20.08.1995")){
             System.out.println(sa.toString());
         }*/
         //managePersonalController.updateSalesMan(1000,new SalesMan(2,"Peter","Parker","30.06.1990","Being the friendly spider of the neighborhood"));
-        //SalesMan s = managePersonalController.readSalesMan(1);
+        System.out.println(managePersonalController.readSalesMan(1));
 
-        EvaluationRecord rc = new EvaluationRecord(2,1,2,2015,"Being 65% good",1);
-        //managePersonalController.addPerformanceRecord(rc,1);
+        /*EvaluationRecord rc = new EvaluationRecord(1,1,2,2015,"Being 65% good",1);
+        managePersonalController.addPerformanceRecord(rc,1);
         //managePersonalController.updatePerformanceRecord(1,rc);
 
-        managePersonalController.deleteAllPerformanceRecords(1);
-       for(EvaluationRecord evalRC: managePersonalController.readAllEvaluationRecords(1)){
-            System.out.println(evalRC);
-        }
+        //managePersonalController.deleteAllPerformanceRecords(1);
+       /*for(EvaluationRecord evalRC: managePersonalController.readAllEvaluationRecords(1)) {
+           System.out.println(evalRC);
+       }*/
+        //System.out.println(managePersonalController.readEvaluationRecord(1,1));
     }
 }
