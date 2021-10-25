@@ -84,7 +84,7 @@ public class EingabeDialog {
                             "deleteSalesMan SID\n" +
                             "querySalesMan attribute key\n" +
                             "updateSalesMan SID new_SID firstName lastName dateOfBirth experience\n" +
-                            "addPerformanceRecord ERID actualValue targetValue year goalDesc \n" +
+                            "addPerformanceRecord ERID actualValue targetValue year goalDesc SID\n" +
                             "readAllEvaluationRecords SID\n" +
                             "updatePerformanceRecord SID ERID actualValue targetValue year goalDesc SID\n" +
                             "deletePerformanceRecord SID ERID\n" +
@@ -93,7 +93,7 @@ public class EingabeDialog {
                             "help");
                     break;
                 default:
-                    System.out.println("Ungültiger Befehl!");
+                    System.out.println("Invalid command!");
                     break;
             }
             System.out.print(">");
