@@ -15,7 +15,10 @@ public class EingabeDialog {
         String strInput;
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Personal Manager");
+        System.out.println("Personal Manager V1.0");
+        System.out.println("Manage performance records!");
+        System.out.println("type \"help\" for possible commands");
+        System.out.print(">");
         while (sc.hasNext()) {
 
             strInput = sc.nextLine();
@@ -77,15 +80,15 @@ public class EingabeDialog {
                 case "help":
                     System.out.println("Mögliche Befehle:\n" +
                             "createSalesMan SID firstName lastName dateOfBirth experience\n" +
-                            "readSalesMan\n" +
-                            "deleteSalesMan\n" +
-                            "querySalesMan\n" +
-                            "updateSalesMan\n" +
-                            "addPerformanceRecord\n" +
-                            "readAllEvaluationRecords\n" +
-                            "updatePerformanceRecord\n" +
-                            "deletePerformanceRecord\n" +
-                            "deleteAllPerformanceRecords\n" +
+                            "readSalesMan SID\n" +
+                            "deleteSalesMan SID\n" +
+                            "querySalesMan attribute key\n" +
+                            "updateSalesMan SID new_SID firstName lastName dateOfBirth experience\n" +
+                            "addPerformanceRecord ERID actualValue targetValue year goalDesc \n" +
+                            "readAllEvaluationRecords SID\n" +
+                            "updatePerformanceRecord SID ERID actualValue targetValue year goalDesc SID\n" +
+                            "deletePerformanceRecord SID ERID\n" +
+                            "deleteAllPerformanceRecords SID\n" +
                             "exit\n" +
                             "help");
                     break;
@@ -93,6 +96,7 @@ public class EingabeDialog {
                     System.out.println("Ungültiger Befehl!");
                     break;
             }
+            System.out.print(">");
 
         }
 
