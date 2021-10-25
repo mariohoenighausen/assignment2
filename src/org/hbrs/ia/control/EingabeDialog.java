@@ -86,7 +86,7 @@ public class EingabeDialog {
                             "updatePerformanceRecord\n" +
                             "deletePerformanceRecord\n" +
                             "deleteAllPerformanceRecords\n" +
-                            "exit\n +" +
+                            "exit\n" +
                             "help");
                     break;
                 default:
