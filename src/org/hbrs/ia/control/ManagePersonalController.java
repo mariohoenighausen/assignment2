@@ -5,6 +5,7 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.hbrs.ia.model.EvaluationRecord;
 import org.hbrs.ia.model.SalesMan;
@@ -172,6 +173,9 @@ public class ManagePersonalController implements ManagePersonal{
         catch(Exception exception){
 
         }
+        if(results.size() == 0){
+            throw new NoSuchElementException();
+        }
         ArrayList<EvaluationRecord> evaluationRecords = new ArrayList<>();
         for(Document doc : results){
             EvaluationRecord eva = new EvaluationRecord(Integer.parseInt(doc.get("erid").toString()),Integer.parseInt(doc.get("actualValue").toString()),Integer.parseInt(doc.get("targetValue").toString()),Integer.parseInt(doc.get("year").toString()),doc.get("goalDescription").toString(),Integer.parseInt(doc.get("sid").toString()));
@@ -192,6 +196,9 @@ public class ManagePersonalController implements ManagePersonal{
         }
         catch(Exception exception){
 
+        }
+        if(results.size() == 0){
+            throw new NoSuchElementException();
         }
         Document doc = results.get(0);
         EvaluationRecord eva = new EvaluationRecord(Integer.parseInt(doc.get("erid").toString()),Integer.parseInt(doc.get("actualValue").toString()),Integer.parseInt(doc.get("targetValue").toString()),Integer.parseInt(doc.get("year").toString()),doc.get("goalDescription").toString(),Integer.parseInt(doc.get("sid").toString()));
@@ -227,13 +234,15 @@ public class ManagePersonalController implements ManagePersonal{
             MongoClient mongoClient = mongoClient = new MongoClient(mongoClientURI);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> evalRcs = database.getCollection(collectionNames.get(1));
-            //evaluationRecord = ;
+            //evaluationRecord = readEvaluationRecord(sid, evaluationRecordId);
             evalRcs.deleteOne(and(eq("sid", sid),eq("erid",evaluationRecordId)));
         }
         catch(Exception ex){
 
         }
-        // return evaluationRecord;
+
+        //return evaluationRecord;
+
     }
     //TODO: maybe return deleted performance records
     @Override
